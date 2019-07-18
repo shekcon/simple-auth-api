@@ -1,13 +1,8 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using Auth.API.Helpers;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Auth.API.Services;
 using Auth.API.Resources;
-using Auth.API.Models;
-using Auth.API.Security;
 using Auth.API.Validation;
 
 namespace Auth.API.Controllers
@@ -24,7 +19,6 @@ namespace Auth.API.Controllers
     {
         private IAuthService _authService;
         private IMapper _mapper;
-        private readonly AppSettings _appSettings;
 
         ///<summary>
         /// Setup services
@@ -73,7 +67,7 @@ namespace Auth.API.Controllers
         [HttpPost]
         public RedirectToActionResult Register([FromBody]RegisterResource paramBody)
         {
-            return RedirectToAction("Create", "Auth", new { area = "Users" });
+            return RedirectToActionPreserveMethod("CreateUser", "Users");
         }
         ///<summary>
         /// Gets user by id
