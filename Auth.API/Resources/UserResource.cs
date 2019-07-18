@@ -15,10 +15,10 @@ namespace Auth.API.Resources
         /// <example>123456789</example>
         [MinLength(8)]
         public string password { get; set; }
-        /// <summary>
+       /// <summary>
         /// Email of user
         /// </summary>
-        /// <example>Ho Chi Minh</example>
+        /// <example>example@gmail.com</example>
         [EmailAddress(ErrorMessage = "Not a valid email")]
         public string email { get; set; }
 

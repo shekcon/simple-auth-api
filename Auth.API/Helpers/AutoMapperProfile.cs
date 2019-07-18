@@ -1,13 +1,7 @@
 using AutoMapper;
 using Auth.API.Resources;
 using Auth.API.Models;
-using System.Collections.Generic;
-using System.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Data.Common;
-using System;
-// using Auth.API.Format;
+using Auth.API.Responses;
 
 namespace Auth.API.Helpers
 {
@@ -21,6 +15,8 @@ namespace Auth.API.Helpers
             CreateMap<LoginResource, User>();
             CreateMap<User, UserResource>();
             CreateMap<UserResource, User>();
+            CreateMap<User, UserResponse>();
+            CreateMap<UserResponse, User>();
         }
     }
 }

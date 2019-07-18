@@ -1,21 +1,20 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using System.IdentityModel.Tokens.Jwt;
 using Auth.API.Helpers;
-using Microsoft.Extensions.Options;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Auth.API.Services;
 using Auth.API.Resources;
 using Auth.API.Models;
-using System.Linq;
+using Auth.API.Validation;
+using Auth.API.Security;
+using Auth.API.Responses;
 
 namespace Auth.API.Controllers
 {
+    [Consumes( "application/json" )]
+    [Produces("application/json")]
+    [ValidateModel]
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
@@ -57,28 +56,25 @@ namespace Auth.API.Controllers
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
-            var userDtos = _mapper.Map<IList<UserResource>>(users);
+            var userDtos = _mapper.Map<IList<UserResponse>>(users);
             return Ok(userDtos);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var userIdentity = (ClaimsIdentity)User.Identity;
-            var claims = userIdentity.Claims;
-            var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-            if(id != Int32.Parse(User.Identity.Name) &&  roles[0].Value == "admin"){
+            if(!AuthorizeUser.isMatchID(User, id) && !AuthorizeUser.isMatchRole(User, "admin")){
                 return Forbid();
             }
             var user = _userService.GetById(id);
-            var userDto = _mapper.Map<UserResource>(user);
+            var userDto = _mapper.Map<UserResponse>(user);
             return Ok(userDto);
         }
 
         [HttpPatch("{id}")]
         public IActionResult Update(int id, [FromBody]UserResource userDto)
         {
-            if(id != Int32.Parse(User.Identity.Name)){
+            if(!AuthorizeUser.isMatchID(User, id)){
                 return Forbid();
             }
             try
@@ -95,7 +91,7 @@ namespace Auth.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if(id != Int32.Parse(User.Identity.Name)){
+            if(!AuthorizeUser.isMatchID(User, id)){
                 return Forbid();
             }
             _userService.Delete(id);
