@@ -6,7 +6,12 @@ Build a simple web api integrate authentication + authorization
 
 ![swagger-ui](img/Screenshot.png)
 
-# Installation
+# Requirements
+
+- [dotnet-core cli](https://dotnet.microsoft.com/download): 2.2.301
+- [Postgresql](https://www.postgresql.org/): 11.4
+
+# Run app
 
 ```sh
     dotnet run --project *.API/*.csproj
