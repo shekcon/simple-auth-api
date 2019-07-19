@@ -8,7 +8,7 @@ using Auth.API.Validation;
 namespace Auth.API.Controllers
 {
     ///<summary>
-    /// Operations available to users to login, signup and validate user
+    /// Operations available to users to login, signup and authorize user
     ///</summary>
     [Consumes( "application/json" )]
     [Produces("application/json")]
@@ -90,7 +90,7 @@ namespace Auth.API.Controllers
         /// <response code="403">Permission denied</response>
         [Authorize]
         [HttpGet]
-        [Route("user")]
+        [Route("Auth/User")]
         public IActionResult ValidateUser()
         {
             return AuthorizeSuccess();
@@ -105,7 +105,7 @@ namespace Auth.API.Controllers
         /// <response code="403">Permission denied</response>
         [Authorize(Roles = "admin")]
         [HttpGet]
-        [Route("admin")]
+        [Route("Auth/Admin")]
         public IActionResult ValidateAdmin()
         {
             return AuthorizeSuccess();
